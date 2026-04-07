@@ -1,17 +1,5 @@
 package br.com.engalexandre.appestacionamento.service;
 
-import br.com.engalexandre.appestacionamento.dto.MonthlySyncReportResponse;
-import br.com.engalexandre.appestacionamento.dto.SyncBatchResponse;
-import br.com.engalexandre.appestacionamento.dto.SyncPayloadRequest;
-import br.com.engalexandre.appestacionamento.model.SyncBatch;
-import br.com.engalexandre.appestacionamento.repository.SyncBatchRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -19,6 +7,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import br.com.engalexandre.appestacionamento.dto.MonthlySyncReportResponse;
+import br.com.engalexandre.appestacionamento.dto.SyncBatchResponse;
+import br.com.engalexandre.appestacionamento.dto.SyncPayloadRequest;
+import br.com.engalexandre.appestacionamento.model.SyncBatch;
+import br.com.engalexandre.appestacionamento.repository.SyncBatchRepository;
 
 @Service
 public class SyncService {
@@ -112,7 +114,8 @@ public class SyncService {
                 + sizeOf(request.getProdutos())
                 + sizeOf(request.getVendas())
                 + sizeOf(request.getServicos())
-                + sizeOf(request.getMensalistas());
+            + sizeOf(request.getMensalistas())
+            + sizeOf(request.getRawState());
     }
 
     private int sizeOf(JsonNode node) {
@@ -120,6 +123,9 @@ public class SyncService {
             return 0;
         }
         if (node.isArray()) {
+            return node.size();
+        }
+        if (node.isObject()) {
             return node.size();
         }
         return 1;

@@ -1,9 +1,10 @@
 package br.com.engalexandre.appestacionamento.dto;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import jakarta.validation.constraints.NotBlank;
-
 import java.time.Instant;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
+import jakarta.validation.constraints.NotBlank;
 
 public class SyncPayloadRequest {
 
@@ -23,6 +24,7 @@ public class SyncPayloadRequest {
     private JsonNode servicos;
     private JsonNode mensalistas;
     private JsonNode metadata;
+    private JsonNode rawState;
 
     public String getDeviceName() {
         return deviceName;
@@ -118,5 +120,13 @@ public class SyncPayloadRequest {
 
     public void setMetadata(JsonNode metadata) {
         this.metadata = metadata;
+    }
+
+    public JsonNode getRawState() {
+        return rawState;
+    }
+
+    public void setRawState(JsonNode rawState) {
+        this.rawState = rawState;
     }
 }

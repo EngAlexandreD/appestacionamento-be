@@ -27,3 +27,9 @@ management:
   endpoint:
     health:
       show-details: always
+
+app:
+  sync:
+    auth:
+      header-name: ${SYNC_AUTH_HEADER_NAME:X-Sync-Token}
+      token: ${SYNC_AUTH_TOKEN:}

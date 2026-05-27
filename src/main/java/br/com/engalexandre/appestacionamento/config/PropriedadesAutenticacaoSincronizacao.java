@@ -5,9 +5,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @ConfigurationProperties(prefix = "app.sync.auth")
-public class SyncAuthProperties {
+public class PropriedadesAutenticacaoSincronizacao {
 
+    // Mantem o nome do header configuravel sem alterar codigo.
     private String headerName = "X-Sync-Token";
+
+    // Token compartilhado entre app e servidor para proteger os endpoints de sync.
     private String token = "";
 
     public String getHeaderName() {

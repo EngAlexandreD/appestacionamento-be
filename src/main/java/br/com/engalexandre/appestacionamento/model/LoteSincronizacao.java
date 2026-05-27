@@ -21,30 +21,37 @@ import java.time.Instant;
                 )
         }
 )
-public class SyncBatch {
+public class LoteSincronizacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    // Identifica qual terminal originou o snapshot salvo.
     @Column(name = "device_name", nullable = false, length = 120)
     private String deviceName;
 
+    // Hash do payload para deduplicacao rapida por dispositivo.
     @Column(name = "snapshot_hash", nullable = false, length = 180)
     private String snapshotHash;
 
+    // Versao do app remetente, util em auditorias de compatibilidade.
     @Column(name = "app_version", length = 32)
     private String appVersion;
 
+    // Horario informado pelo cliente para o snapshot gerado.
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    // Horario efetivo em que o servidor gravou o snapshot.
     @Column(name = "synchronized_at", nullable = false)
     private Instant synchronizedAt;
 
+    // Quantidade total de itens agregados para consultas administrativas rapidas.
     @Column(name = "total_records", nullable = false)
     private int totalRecords;
 
+    // Payload bruto em JSON para permitir restauracao fiel do estado sincronizado.
     @Lob
     @Column(name = "payload_json", nullable = false, columnDefinition = "LONGTEXT")
     private String payloadJson;

@@ -7,31 +7,32 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @Component
-public class SyncAuthInterceptor implements HandlerInterceptor {
+public class InterceptorAutenticacaoSincronizacao implements HandlerInterceptor {
 
-    private final SyncAuthProperties properties;
+    private final PropriedadesAutenticacaoSincronizacao propriedades;
 
-    public SyncAuthInterceptor(SyncAuthProperties properties) {
-        this.properties = properties;
+    public InterceptorAutenticacaoSincronizacao(PropriedadesAutenticacaoSincronizacao propriedades) {
+        this.propriedades = propriedades;
     }
 
+    // Valida o token compartilhado antes de permitir acesso aos endpoints protegidos.
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (HttpMethod.OPTIONS.matches(request.getMethod())) {
             return true;
         }
 
-        String expectedToken = properties.getToken();
-        if (expectedToken == null || expectedToken.isBlank()) {
+        String tokenEsperado = propriedades.getToken();
+        if (tokenEsperado == null || tokenEsperado.isBlank()) {
             response.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
                     "Token de sincronizacao nao configurado no servidor.");
             return false;
         }
 
-        String headerName = properties.getHeaderName();
-        String providedToken = request.getHeader(headerName);
+        String nomeCabecalho = propriedades.getHeaderName();
+        String tokenInformado = request.getHeader(nomeCabecalho);
 
-        if (!expectedToken.equals(providedToken)) {
+        if (!tokenEsperado.equals(tokenInformado)) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token de sincronizacao invalido.");
             return false;
         }

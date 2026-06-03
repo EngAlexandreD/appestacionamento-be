@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.engalexandre.appestacionamento.dto.crud.AdiantamentoFuncionarioResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioRecebimentoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.MensalistaResponse;
@@ -18,6 +19,7 @@ import br.com.engalexandre.appestacionamento.dto.crud.ServicoVendaResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.VagaResponse;
 import br.com.engalexandre.appestacionamento.dto.sync.IncrementalSyncPullResponse;
 import br.com.engalexandre.appestacionamento.dto.sync.SyncDeletionEntryResponse;
+import br.com.engalexandre.appestacionamento.service.crud.AdiantamentoFuncionarioCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.ConvenioCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.ConvenioRecebimentoCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.MensalistaCrudService;
@@ -43,6 +45,7 @@ public class IncrementalSyncPullService {
     private final ProdutoCrudService produtoCrudService;
     private final ProdutoVendaCrudService produtoVendaCrudService;
     private final DeletionLogService deletionLogService;
+    private final AdiantamentoFuncionarioCrudService adiantamentoCrudService;
 
     public IncrementalSyncPullService(
             MensalistaCrudService mensalistaCrudService,
@@ -54,7 +57,8 @@ public class IncrementalSyncPullService {
             ServicoVendaCrudService servicoVendaCrudService,
             ProdutoCrudService produtoCrudService,
             ProdutoVendaCrudService produtoVendaCrudService,
-            DeletionLogService deletionLogService
+            DeletionLogService deletionLogService,
+            AdiantamentoFuncionarioCrudService adiantamentoCrudService
     ) {
         this.mensalistaCrudService = mensalistaCrudService;
         this.movimentacaoCrudService = movimentacaoCrudService;
@@ -66,6 +70,7 @@ public class IncrementalSyncPullService {
         this.produtoCrudService = produtoCrudService;
         this.produtoVendaCrudService = produtoVendaCrudService;
         this.deletionLogService = deletionLogService;
+        this.adiantamentoCrudService = adiantamentoCrudService;
     }
 
     @Transactional(readOnly = true)
@@ -79,6 +84,7 @@ public class IncrementalSyncPullService {
         List<ServicoVendaResponse> servicoVendas = filterAndSort(servicoVendaCrudService.listAll(), cursor, ServicoVendaResponse::updatedAt);
         List<ProdutoResponse> produtos = filterAndSort(produtoCrudService.listAll(), cursor, ProdutoResponse::updatedAt);
         List<ProdutoVendaResponse> produtoVendas = filterAndSort(produtoVendaCrudService.listAll(), cursor, ProdutoVendaResponse::updatedAt);
+        List<AdiantamentoFuncionarioResponse> adiantamentos = filterAndSort(adiantamentoCrudService.listAll(), cursor, AdiantamentoFuncionarioResponse::updatedAt);
         List<SyncDeletionEntryResponse> deletions = deletionLogService.listDeletionsSince(cursor);
 
         Instant nextCursor = cursor;
@@ -91,6 +97,7 @@ public class IncrementalSyncPullService {
         nextCursor = maxInstant(nextCursor, servicoVendas.stream().map(ServicoVendaResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
         nextCursor = maxInstant(nextCursor, produtos.stream().map(ProdutoResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
         nextCursor = maxInstant(nextCursor, produtoVendas.stream().map(ProdutoVendaResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
+        nextCursor = maxInstant(nextCursor, adiantamentos.stream().map(AdiantamentoFuncionarioResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
         nextCursor = maxInstant(nextCursor, deletions.stream().map(SyncDeletionEntryResponse::deletedAt).max(INSTANT_COMPARATOR).orElse(null));
 
         return new IncrementalSyncPullResponse(
@@ -104,6 +111,7 @@ public class IncrementalSyncPullService {
                 servicoVendas,
                 produtos,
                 produtoVendas,
+                adiantamentos,
                 deletions
         );
     }

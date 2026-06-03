@@ -3,6 +3,7 @@ package br.com.engalexandre.appestacionamento.dto.sync;
 import java.time.Instant;
 import java.util.List;
 
+import br.com.engalexandre.appestacionamento.dto.crud.AdiantamentoFuncionarioResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioRecebimentoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.MensalistaResponse;
@@ -24,6 +25,7 @@ public record IncrementalSyncPullResponse(
         List<ServicoVendaResponse> servicoVendas,
         List<ProdutoResponse> produtos,
         List<ProdutoVendaResponse> produtoVendas,
+        List<AdiantamentoFuncionarioResponse> adiantamentos,
         List<SyncDeletionEntryResponse> deletions
 ) {
 }

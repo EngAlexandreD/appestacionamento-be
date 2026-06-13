@@ -1,10 +1,7 @@
 package br.com.engalexandre.appestacionamento.controller.crud;
 
-import br.com.engalexandre.appestacionamento.dto.crud.MensalistaRequest;
-import br.com.engalexandre.appestacionamento.dto.crud.MensalistaResponse;
-import br.com.engalexandre.appestacionamento.dto.crud.PagamentoMensalistaRequest;
-import br.com.engalexandre.appestacionamento.service.crud.MensalistaCrudService;
-import jakarta.validation.Valid;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import br.com.engalexandre.appestacionamento.dto.crud.MensalistaRequest;
+import br.com.engalexandre.appestacionamento.dto.crud.MensalistaResponse;
+import br.com.engalexandre.appestacionamento.dto.crud.PagamentoMensalistaRequest;
+import br.com.engalexandre.appestacionamento.service.crud.MensalistaCrudService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/mensalistas")
@@ -76,6 +77,15 @@ public class MensalistaController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String id) {
         service.delete(id);
+    }
+
+    @DeleteMapping("/external/{externalId}/pagamentos/{paymentExternalId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePaymentByExternalIds(
+            @PathVariable String externalId,
+            @PathVariable String paymentExternalId
+    ) {
+        service.deletePaymentByExternalIds(externalId, paymentExternalId);
     }
 
     @DeleteMapping("/external/{externalId}")

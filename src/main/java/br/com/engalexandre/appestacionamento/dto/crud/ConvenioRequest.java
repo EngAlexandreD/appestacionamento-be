@@ -16,6 +16,7 @@ public record ConvenioRequest(
         @NotNull @DecimalMin("0.0") BigDecimal valorMeiaHora,
         @NotNull @DecimalMin("0.0") BigDecimal valorBloco,
         Boolean precisaHora,
+        Boolean cobraCiclos,
         Boolean ativo,
         ConvenioTipo tipo,
         @Valid List<ConvenioFaixaRequest> faixas

@@ -129,9 +129,29 @@ public class MensalistaCrudService {
         pagamento.setDataHora(request.dataHora() == null ? Instant.now() : request.dataHora());
         pagamento.setValorPago(request.valorPago());
 
+        // Toca o updatedAt do pai para que o Hibernate marque a entidade como suja.
+        // Sem isso, adicionar/atualizar apenas um filho (pagamento) não dispara @PreUpdate
+        // no mensalista, então o pull incremental do outro aparelho ignoraria esta mudança.
+        entity.touch();
+
         MensalistaEntity saved = repository.save(entity);
         deletionLogService.clearDeletionMarker(ENTITY_TYPE, saved.getExternalId());
         return toResponse(saved);
+    }
+
+    @Transactional
+    public void deletePaymentByExternalIds(String mensalistaExternalId, String pagamentoExternalId) {
+        MensalistaEntity entity = repository.findByExternalId(mensalistaExternalId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mensalista não encontrado."));
+
+        PagamentoMensalistaEntity pagamento = entity.getPagamentos().stream()
+                .filter(item -> pagamentoExternalId.equals(item.getExternalId()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pagamento não encontrado."));
+
+        entity.getPagamentos().remove(pagamento);
+        entity.touch();
+        repository.save(entity);
     }
 
     private MensalistaEntity getEntity(String id) {

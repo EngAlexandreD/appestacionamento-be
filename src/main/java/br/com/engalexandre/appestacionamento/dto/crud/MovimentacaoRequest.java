@@ -22,6 +22,7 @@ public record MovimentacaoRequest(
         String placa,
         Integer numeroVaga,
         Integer minutosBrutos,
-        Boolean foiFechado
+        Boolean foiFechado,
+        Boolean extraviado
 ) {
 }

@@ -120,6 +120,7 @@ public class ConvenioCrudService {
         entity.setValorMeiaHora(request.valorMeiaHora());
         entity.setValorBloco(request.valorBloco());
         entity.setPrecisaHora(Boolean.TRUE.equals(request.precisaHora()));
+        entity.setCobraCiclos(Boolean.TRUE.equals(request.cobraCiclos()));
         entity.setAtivo(request.ativo() == null || request.ativo());
         entity.setTipo(request.tipo() == null ? ConvenioTipo.BLOCO : request.tipo());
         entity.replaceFaixas(toFaixas(request.faixas()));
@@ -157,6 +158,7 @@ public class ConvenioCrudService {
                 entity.getValorMeiaHora(),
                 entity.getValorBloco(),
                 entity.isPrecisaHora(),
+                entity.isCobraCiclos(),
                 entity.isAtivo(),
                 entity.getTipo(),
                 entity.getFaixas().stream()

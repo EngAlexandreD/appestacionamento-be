@@ -42,6 +42,9 @@ public class ConvenioEntity extends BaseEntity {
     @Column(name = "precisa_hora", nullable = false)
     private boolean precisaHora;
 
+    @Column(name = "cobra_ciclos", nullable = false)
+    private boolean cobraCiclos = false;
+
     @Column(name = "ativo", nullable = false)
     private boolean ativo = true;
 
@@ -98,6 +101,14 @@ public class ConvenioEntity extends BaseEntity {
 
     public void setPrecisaHora(boolean precisaHora) {
         this.precisaHora = precisaHora;
+    }
+
+    public boolean isCobraCiclos() {
+        return cobraCiclos;
+    }
+
+    public void setCobraCiclos(boolean cobraCiclos) {
+        this.cobraCiclos = cobraCiclos;
     }
 
     public boolean isAtivo() {

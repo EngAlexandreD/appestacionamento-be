@@ -1,5 +1,7 @@
 package br.com.engalexandre.appestacionamento.entity;
 
+import java.time.Instant;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,8 +10,6 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Version;
-
-import java.time.Instant;
 
 @MappedSuperclass
 public abstract class BaseEntity {
@@ -40,6 +40,14 @@ public abstract class BaseEntity {
 
     @PreUpdate
     protected void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
+
+    /**
+     * Força a atualização do updatedAt, tornando a entidade suja para o Hibernate
+     * mesmo que nenhuma coluna própria tenha sido alterada (ex: ao adicionar filhos via cascade).
+     */
+    public void touch() {
         this.updatedAt = Instant.now();
     }
 

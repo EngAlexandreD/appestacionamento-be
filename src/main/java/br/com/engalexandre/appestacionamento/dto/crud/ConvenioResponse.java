@@ -14,6 +14,7 @@ public record ConvenioResponse(
         BigDecimal valorMeiaHora,
         BigDecimal valorBloco,
         boolean precisaHora,
+        boolean cobraCiclos,
         boolean ativo,
         ConvenioTipo tipo,
         List<ConvenioFaixaResponse> faixas,

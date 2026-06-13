@@ -133,6 +133,7 @@ public class MovimentacaoCrudService {
         entity.setNumeroVaga(request.numeroVaga());
         entity.setMinutosBrutos(request.minutosBrutos());
         entity.setFoiFechado(Boolean.TRUE.equals(request.foiFechado()));
+        entity.setExtraviado(Boolean.TRUE.equals(request.extraviado()));
     }
 
     private MovimentacaoResponse toResponse(MovimentacaoEntity entity) {
@@ -153,6 +154,7 @@ public class MovimentacaoCrudService {
                 entity.getNumeroVaga(),
                 entity.getMinutosBrutos(),
                 entity.isFoiFechado(),
+                entity.isExtraviado(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

@@ -56,6 +56,9 @@ public class MovimentacaoEntity extends BaseEntity {
     @Column(name = "foi_fechado", nullable = false)
     private boolean foiFechado;
 
+    @Column(name = "extraviado", nullable = false)
+    private boolean extraviado = false;
+
     public String getOperacaoOrigemId() {
         return operacaoOrigemId;
     }
@@ -174,5 +177,13 @@ public class MovimentacaoEntity extends BaseEntity {
 
     public void setFoiFechado(boolean foiFechado) {
         this.foiFechado = foiFechado;
+    }
+
+    public boolean isExtraviado() {
+        return extraviado;
+    }
+
+    public void setExtraviado(boolean extraviado) {
+        this.extraviado = extraviado;
     }
 }

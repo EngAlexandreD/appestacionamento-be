@@ -20,6 +20,7 @@ public record MovimentacaoResponse(
         Integer numeroVaga,
         Integer minutosBrutos,
         boolean foiFechado,
+        boolean extraviado,
         Instant createdAt,
         Instant updatedAt
 ) {

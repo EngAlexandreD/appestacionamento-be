@@ -6,6 +6,7 @@ import java.util.List;
 import br.com.engalexandre.appestacionamento.dto.crud.AdiantamentoFuncionarioResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioRecebimentoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioResponse;
+import br.com.engalexandre.appestacionamento.dto.crud.GastoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.MensalistaResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.MovimentacaoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ProdutoResponse;
@@ -26,6 +27,7 @@ public record IncrementalSyncPullResponse(
         List<ProdutoResponse> produtos,
         List<ProdutoVendaResponse> produtoVendas,
         List<AdiantamentoFuncionarioResponse> adiantamentos,
+        List<GastoResponse> gastos,
         List<SyncDeletionEntryResponse> deletions
 ) {
 }

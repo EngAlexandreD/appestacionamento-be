@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.engalexandre.appestacionamento.dto.crud.AdiantamentoFuncionarioResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioRecebimentoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ConvenioResponse;
+import br.com.engalexandre.appestacionamento.dto.crud.GastoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.MensalistaResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.MovimentacaoResponse;
 import br.com.engalexandre.appestacionamento.dto.crud.ProdutoResponse;
@@ -22,6 +23,7 @@ import br.com.engalexandre.appestacionamento.dto.sync.SyncDeletionEntryResponse;
 import br.com.engalexandre.appestacionamento.service.crud.AdiantamentoFuncionarioCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.ConvenioCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.ConvenioRecebimentoCrudService;
+import br.com.engalexandre.appestacionamento.service.crud.GastoCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.MensalistaCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.MovimentacaoCrudService;
 import br.com.engalexandre.appestacionamento.service.crud.ProdutoCrudService;
@@ -46,6 +48,7 @@ public class IncrementalSyncPullService {
     private final ProdutoVendaCrudService produtoVendaCrudService;
     private final DeletionLogService deletionLogService;
     private final AdiantamentoFuncionarioCrudService adiantamentoCrudService;
+    private final GastoCrudService gastoCrudService;
 
     public IncrementalSyncPullService(
             MensalistaCrudService mensalistaCrudService,
@@ -58,7 +61,8 @@ public class IncrementalSyncPullService {
             ProdutoCrudService produtoCrudService,
             ProdutoVendaCrudService produtoVendaCrudService,
             DeletionLogService deletionLogService,
-            AdiantamentoFuncionarioCrudService adiantamentoCrudService
+            AdiantamentoFuncionarioCrudService adiantamentoCrudService,
+            GastoCrudService gastoCrudService
     ) {
         this.mensalistaCrudService = mensalistaCrudService;
         this.movimentacaoCrudService = movimentacaoCrudService;
@@ -71,6 +75,7 @@ public class IncrementalSyncPullService {
         this.produtoVendaCrudService = produtoVendaCrudService;
         this.deletionLogService = deletionLogService;
         this.adiantamentoCrudService = adiantamentoCrudService;
+        this.gastoCrudService = gastoCrudService;
     }
 
     @Transactional(readOnly = true)
@@ -85,6 +90,7 @@ public class IncrementalSyncPullService {
         List<ProdutoResponse> produtos = filterAndSort(produtoCrudService.listAll(), cursor, ProdutoResponse::updatedAt);
         List<ProdutoVendaResponse> produtoVendas = filterAndSort(produtoVendaCrudService.listAll(), cursor, ProdutoVendaResponse::updatedAt);
         List<AdiantamentoFuncionarioResponse> adiantamentos = filterAndSort(adiantamentoCrudService.listAll(), cursor, AdiantamentoFuncionarioResponse::updatedAt);
+        List<GastoResponse> gastos = filterAndSort(gastoCrudService.listAll(), cursor, GastoResponse::updatedAt);
         List<SyncDeletionEntryResponse> deletions = deletionLogService.listDeletionsSince(cursor);
 
         Instant nextCursor = cursor;
@@ -98,11 +104,12 @@ public class IncrementalSyncPullService {
         nextCursor = maxInstant(nextCursor, produtos.stream().map(ProdutoResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
         nextCursor = maxInstant(nextCursor, produtoVendas.stream().map(ProdutoVendaResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
         nextCursor = maxInstant(nextCursor, adiantamentos.stream().map(AdiantamentoFuncionarioResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
+        nextCursor = maxInstant(nextCursor, gastos.stream().map(GastoResponse::updatedAt).max(INSTANT_COMPARATOR).orElse(null));
         nextCursor = maxInstant(nextCursor, deletions.stream().map(SyncDeletionEntryResponse::deletedAt).max(INSTANT_COMPARATOR).orElse(null));
 
         return new IncrementalSyncPullResponse(
                 nextCursor,
-            movimentacoes,
+                movimentacoes,
                 mensalistas,
                 convenios,
                 convenioRecebimentos,
@@ -112,6 +119,7 @@ public class IncrementalSyncPullService {
                 produtos,
                 produtoVendas,
                 adiantamentos,
+                gastos,
                 deletions
         );
     }

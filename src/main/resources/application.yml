@@ -34,10 +34,11 @@ app:
       header-name: ${SYNC_AUTH_HEADER_NAME:X-Sync-Token}
       token: ${SYNC_AUTH_TOKEN:pax-estac-2026-sync-84f2c91a-3bd7}
   release:
-    version: ${APP_RELEASE_VERSION:1.0.16}
-    url: ${APP_RELEASE_URL:https://github.com/EngAlexandreD/appestacionamento-be/releases/download/v1.0.16/appestacionamento.apk}
-    notes: "${APP_RELEASE_NOTES:feat: resetar sincronizacao completa no diagnostico}"
+    version: ${APP_RELEASE_VERSION:1.0.17}
+    url: ${APP_RELEASE_URL:https://github.com/EngAlexandreD/appestacionamento-be/releases/download/v1.0.17/appestacionamento.apk}
+    notes: "${APP_RELEASE_NOTES:feat: vagas e extrato atualizam automaticamente ao receber dados de outro aparelho}"
     published-at: ${APP_RELEASE_PUBLISHED_AT:2026-06-16T00:00:00-03:00}
+
 
 
 

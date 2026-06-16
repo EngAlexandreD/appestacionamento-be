@@ -34,10 +34,11 @@ app:
       header-name: ${SYNC_AUTH_HEADER_NAME:X-Sync-Token}
       token: ${SYNC_AUTH_TOKEN:pax-estac-2026-sync-84f2c91a-3bd7}
   release:
-    version: ${APP_RELEASE_VERSION:1.0.18}
-    url: ${APP_RELEASE_URL:https://github.com/EngAlexandreD/appestacionamento-be/releases/download/v1.0.18/appestacionamento.apk}
-    notes: "${APP_RELEASE_NOTES:feat: tempo estacionado exibido em horas (2h10min) nas vagas}"
+    version: ${APP_RELEASE_VERSION:1.0.19}
+    url: ${APP_RELEASE_URL:https://github.com/EngAlexandreD/appestacionamento-be/releases/download/v1.0.19/appestacionamento.apk}
+    notes: "${APP_RELEASE_NOTES:feat: tempo estacionado exibido em horas nas vagas e no resumo consolidado}"
     published-at: ${APP_RELEASE_PUBLISHED_AT:2026-06-16T00:00:00-03:00}
+
 
 
 

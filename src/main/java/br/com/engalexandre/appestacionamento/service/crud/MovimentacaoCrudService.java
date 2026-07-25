@@ -55,6 +55,16 @@ public class MovimentacaoCrudService {
     }
 
     private MovimentacaoResponse persistNew(MovimentacaoRequest request) {
+        String ticketId = request.ticketId() == null ? null : request.ticketId().trim();
+        if (ticketId != null && !ticketId.isBlank()) {
+            repository.findByTicketId(ticketId).ifPresent(existing -> {
+                throw new ResponseStatusException(
+                        HttpStatus.CONFLICT,
+                        "Já existe uma movimentação para este ticket (id existente: " + existing.getId() + ")."
+                );
+            });
+        }
+
         MovimentacaoEntity entity = new MovimentacaoEntity();
         apply(entity, request);
         MovimentacaoEntity saved = repository.save(entity);
@@ -65,6 +75,17 @@ public class MovimentacaoCrudService {
     @Transactional
     public MovimentacaoResponse update(String id, MovimentacaoRequest request) {
         MovimentacaoEntity entity = getEntity(id);
+        String ticketId = request.ticketId() == null ? null : request.ticketId().trim();
+        if (ticketId != null && !ticketId.isBlank()) {
+            repository.findByTicketId(ticketId)
+                    .filter(existing -> !existing.getId().equals(entity.getId()))
+                    .ifPresent(existing -> {
+                        throw new ResponseStatusException(
+                                HttpStatus.CONFLICT,
+                                "Já existe uma movimentação para este ticket (id existente: " + existing.getId() + ")."
+                        );
+                    });
+        }
         apply(entity, request);
         MovimentacaoEntity saved = repository.save(entity);
         deletionLogService.clearDeletionMarker("movimentacao", resolveSyncId(saved));

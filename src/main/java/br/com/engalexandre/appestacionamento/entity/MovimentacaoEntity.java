@@ -14,7 +14,7 @@ public class MovimentacaoEntity extends BaseEntity {
     @Column(name = "operacao_origem_id", unique = true, length = 120)
     private String operacaoOrigemId;
 
-    @Column(name = "ticket_id", unique = true, length = 80, nullable = false)
+    @Column(name = "ticket_id", unique = true, length = 80)
     private String ticketId;
 
     @Column(name = "ticket_code", length = 80)

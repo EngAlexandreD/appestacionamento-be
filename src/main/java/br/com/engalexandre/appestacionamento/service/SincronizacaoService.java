@@ -115,6 +115,11 @@ public class SincronizacaoService {
         );
     }
 
+    // Cada lote guarda um snapshot completo (JSON grande) do dispositivo; sem limite isso
+    // cresce sem parar quando o app fica preso em loop de sincronizacao (payload muda a
+    // cada tentativa, entao a deduplicacao por hash nao pega) e enche o disco do servidor.
+    private static final int MAX_LOTES_POR_DISPOSITIVO = 5;
+
     // Persiste um novo lote mantendo os metadados necessarios para auditoria e restauracao.
     private RespostaLoteSincronizacao persistirNovoLote(RequisicaoPayloadSincronizacao requisicao) {
         LoteSincronizacao lote = new LoteSincronizacao();
@@ -127,7 +132,16 @@ public class SincronizacaoService {
         lote.setPayloadJson(serializarPayload(requisicao));
 
         LoteSincronizacao salvo = repositorio.save(lote);
+        podarLotesAntigos(requisicao.getNomeDispositivo());
         return paraResposta(salvo, false);
+    }
+
+    // Mantem apenas os snapshots mais recentes de cada dispositivo, descartando o restante.
+    private void podarLotesAntigos(String deviceName) {
+        List<LoteSincronizacao> lotes = repositorio.findByDeviceNameOrderBySynchronizedAtDesc(deviceName);
+        if (lotes.size() > MAX_LOTES_POR_DISPOSITIVO) {
+            repositorio.deleteAll(lotes.subList(MAX_LOTES_POR_DISPOSITIVO, lotes.size()));
+        }
     }
 
     // Seleciona o lote mais recente de um dispositivo ou, sem filtro, o mais recente do servidor inteiro.

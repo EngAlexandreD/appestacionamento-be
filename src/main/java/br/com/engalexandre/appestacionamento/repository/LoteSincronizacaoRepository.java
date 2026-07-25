@@ -19,6 +19,9 @@ public interface LoteSincronizacaoRepository extends JpaRepository<LoteSincroniz
     // Recupera o ultimo lote global salvo no servidor, sem filtro por dispositivo.
     Optional<LoteSincronizacao> findTopByOrderBySynchronizedAtDesc();
 
+    // Lista os lotes de um dispositivo do mais recente para o mais antigo, usado na poda de retencao.
+    List<LoteSincronizacao> findByDeviceNameOrderBySynchronizedAtDesc(String deviceName);
+
     // Busca lotes do intervalo mensal para consolidacao do relatorio.
     List<LoteSincronizacao> findBySynchronizedAtBetweenOrderBySynchronizedAtDesc(Instant start, Instant end);
 }

@@ -11,4 +11,6 @@ public interface MovimentacaoRepository extends JpaRepository<MovimentacaoEntity
     List<MovimentacaoEntity> findAllByOrderByDataHoraDesc();
 
     Optional<MovimentacaoEntity> findByOperacaoOrigemId(String operacaoOrigemId);
+
+    Optional<MovimentacaoEntity> findByTicketId(String ticketId);
 }

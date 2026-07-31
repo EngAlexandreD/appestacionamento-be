@@ -40,6 +40,11 @@ app:
     url: ${APP_RELEASE_URL:https://github.com/EngAlexandreD/appestacionamento-be/releases/download/v1.0.23/appestacionamento.apk}
     notes: "${APP_RELEASE_NOTES:fix: corrige calculo de convenios em ciclo, evita tickets duplicados e adiciona lancamento manual no extrato}"
     published-at: ${APP_RELEASE_PUBLISHED_AT:2026-07-25T00:00:00-03:00}
+  pagbank:
+    api-url: ${PAGBANK_API_URL:https://sandbox.api.pagseguro.com}
+    token: ${PAGBANK_TOKEN:}
+    webhook-url: ${PAGBANK_WEBHOOK_URL:https://desktop-vf1i427.tail1265aa.ts.net/api/webhooks/pagbank}
+    expiracao-segundos: ${PAGBANK_EXPIRACAO_SEGUNDOS:300}
 
 
 

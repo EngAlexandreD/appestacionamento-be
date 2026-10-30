@@ -20,6 +20,18 @@ public class ServicoVendaEntity extends BaseEntity {
     @Column(name = "nome", nullable = false, length = 160)
     private String nome;
 
+    @Column(name = "cliente_nome", length = 160)
+    private String clienteNome;
+
+    @Column(name = "cliente_telefone", length = 40)
+    private String clienteTelefone;
+
+    @Column(name = "placa", length = 20)
+    private String placa;
+
+    @Column(name = "modelo_veiculo", length = 120)
+    private String modeloVeiculo;
+
     @Column(name = "valor", nullable = false, precision = 12, scale = 2)
     private BigDecimal valor;
 
@@ -51,6 +63,38 @@ public class ServicoVendaEntity extends BaseEntity {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getClienteNome() {
+        return clienteNome;
+    }
+
+    public void setClienteNome(String clienteNome) {
+        this.clienteNome = clienteNome;
+    }
+
+    public String getClienteTelefone() {
+        return clienteTelefone;
+    }
+
+    public void setClienteTelefone(String clienteTelefone) {
+        this.clienteTelefone = clienteTelefone;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public String getModeloVeiculo() {
+        return modeloVeiculo;
+    }
+
+    public void setModeloVeiculo(String modeloVeiculo) {
+        this.modeloVeiculo = modeloVeiculo;
     }
 
     public BigDecimal getValor() {

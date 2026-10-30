@@ -106,6 +106,10 @@ public class ServicoVendaCrudService {
         }
         entity.setServicoExternalId(request.servicoExternalId());
         entity.setNome(request.nome().trim());
+        entity.setClienteNome(trimToNull(request.clienteNome()));
+        entity.setClienteTelefone(trimToNull(request.clienteTelefone()));
+        entity.setPlaca(trimToNull(request.placa()));
+        entity.setModeloVeiculo(trimToNull(request.modeloVeiculo()));
         entity.setValor(request.valor());
         entity.setMetodo(request.metodo().trim());
         entity.setData(request.data() == null ? Instant.now() : request.data());
@@ -117,11 +121,22 @@ public class ServicoVendaCrudService {
                 entity.getExternalId(),
                 entity.getServicoExternalId(),
                 entity.getNome(),
+                entity.getClienteNome(),
+                entity.getClienteTelefone(),
+                entity.getPlaca(),
+                entity.getModeloVeiculo(),
                 entity.getValor(),
                 entity.getMetodo(),
                 entity.getData(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
+    }
+
+    private String trimToNull(String value) {
+        if (value == null || value.isBlank()) {
+            return null;
+        }
+        return value.trim();
     }
 }

@@ -11,6 +11,10 @@ public record ServicoVendaRequest(
         String externalId,
         String servicoExternalId,
         @NotBlank String nome,
+        String clienteNome,
+        String clienteTelefone,
+        String placa,
+        String modeloVeiculo,
         @NotNull @DecimalMin("0.0") BigDecimal valor,
         @NotBlank String metodo,
         Instant data
